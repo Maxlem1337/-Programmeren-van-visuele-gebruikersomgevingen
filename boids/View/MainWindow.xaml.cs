@@ -48,5 +48,10 @@ namespace View
 
         //public Simulation Simulation { get; }
         public WorldViewModel WorldViewModel { get; }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //WorldViewModel.Simulation.Species[0].MaximumSpeed;
+        }
     }
 }

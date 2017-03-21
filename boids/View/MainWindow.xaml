@@ -4,14 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+        xmlns:testing="clr-namespace:Bindings;assembly=VGOLibrary"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
 
-    <DockPanel>
+    <StackPanel>
         <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
-            <ItemsControl.ItemsPanel>
+           <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas />
+                    <Canvas>
+                        
+                    </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
@@ -26,8 +29,65 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Label Content="{Binding Path=Simulation.Species[0].Name, UpdateSourceTrigger=PropertyChanged}"></Label>
-        <Slider Maximum="5000" Minimum="0" Value="{Binding Path=Simulation.Species[0].MaximumSpeed}"></Slider>
 
-    </DockPanel>
+        
+        
+        
+        <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Label Content="{Binding Species.Name}"></Label>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+
+        <ItemsControl ItemsSource="{Binding Simulation.World.Population[0].Species.Bindings.Parameters}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type testing:RangedDoubleParameter}">
+                    <StackPanel>
+                        <Label Content="{Binding}"></Label>
+
+                        <!-- 
+                        <Label Content="{Binding.DefaultValue}"></Label>
+                        <Label Content="{Binding.Maximum}"></Label>
+                        <Label Content="{Binding.Minimum}"></Label>
+                        -->
+                        
+                         
+                        <Slider Maximum="5000" Minimum="0"></Slider>
+                        
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+
+    </StackPanel>
+    
+    
 </Window>
