@@ -14,10 +14,25 @@ namespace Model.Species
     public abstract class BoidSpecies
     {
         public static RangedDoubleParameter MaximumSpeed = new RangedDoubleParameter("Maximum Speed", defaultValue: 1000.0, minimum: 0, maximum: 5000);
+        
+        public RangedDoubleParameter ChangeMaximumSpeed
+        {
+            get
+            {
+                return MaximumSpeed;
+            }
+            set
+            {
+                MaximumSpeed = value;
+            }
+        }
+
 
         public static RangedDoubleParameter MaximumAcceleration = new RangedDoubleParameter("Maximum Acceleration", defaultValue: 5000.0, minimum: 0, maximum: 50000);
 
         public static RangedDoubleParameter Elasticity = new RangedDoubleParameter("Elasticity", defaultValue: 0.25, minimum: 0, maximum: 1);
+
+        public string Color { get; set; }
 
         protected BoidSpecies(World world, string name)
         {

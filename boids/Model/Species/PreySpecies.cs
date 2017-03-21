@@ -20,7 +20,7 @@ namespace Model.Species
 
         public static RangedDoubleParameter WallRepulsionExponent = new RangedDoubleParameter("Wall Repulsion Exponent", defaultValue: 1.1, minimum: 1, maximum: 10);
 
-        public static Parameter<string> EnemySpecies = new Parameter<string>("Repulsive Species", "hunter");
+        public static Parameter<string> EnemySpecies = new Parameter<string>("Repulsive Species", "hunter");        
 
         public PreySpecies(World world)
             : base(world, "prey")
@@ -31,6 +31,7 @@ namespace Model.Species
                 .Initialize(WallRepulsionConstant)
                 .Initialize(WallRepulsionExponent)
                 .Initialize(EnemySpecies);
+            base.Color = "Green";
         }
 
         internal override IArtificialIntelligence CreateAI(Boid boid)

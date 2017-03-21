@@ -6,22 +6,28 @@
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <Canvas />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemContainerStyle>
-            <Style TargetType="{x:Type ContentPresenter}">
-                <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
-                <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
-            </Style>
-        </ItemsControl.ItemContainerStyle>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Ellipse Fill="Red"  Width="25" Height="25" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+
+    <DockPanel>
+        <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Fill="{Binding Species.Color}"  Width="25" Height="25" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Label Content="{Binding Path=Simulation.Species[0].Name, UpdateSourceTrigger=PropertyChanged}"></Label>
+        <Slider Maximum="5000" Minimum="0" Value="{Binding Path=Simulation.Species[0].MaximumSpeed}"></Slider>
+
+    </DockPanel>
 </Window>
