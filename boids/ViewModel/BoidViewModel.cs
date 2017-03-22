@@ -1,4 +1,5 @@
-﻿using Mathematics;
+﻿using Cells;
+using Mathematics;
 using Model;
 using Model.Species;
 using System;
@@ -10,13 +11,37 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    class BoidViewModel
+    public class BoidViewModel
     {
         public Boid Boid { get; private set; }
 
-        public BoidViewModel(World world, Vector2D position, BoidSpecies species)
+        public BoidViewModel(Boid boid)
         {
-            this.Boid = new Boid(world, position, species);
+            this.Boid = boid;
+        }
+
+        public Cell<Vector2D> Position
+        {
+            get
+            {
+                return Boid.Position;
+            }
+        }
+
+        public String Color
+        {
+            get
+            {
+                return Boid.Species.Color;
+            }
+        }
+
+        public BoidSpecies Species
+        {
+            get
+            {
+                return Boid.Species;
+            }
         }
 
     }

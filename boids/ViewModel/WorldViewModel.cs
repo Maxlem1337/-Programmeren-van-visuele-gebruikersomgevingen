@@ -1,7 +1,12 @@
-﻿using Mathematics;
+﻿using Bindings;
+using Cells;
+using Mathematics;
 using Model;
+using Model.Species;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +24,32 @@ namespace ViewModel
         }
 
         public Simulation Simulation { get; set; }
-        
 
+        public ObservableCollection<BoidViewModel> Population
+        {
+            get
+            {
+                ObservableCollection<BoidViewModel> pop = new ObservableCollection<BoidViewModel>();
+
+                foreach (Boid boid in Simulation.World.Population)
+                {
+                    pop.Add(new BoidViewModel(boid));
+                }
+
+                return pop;
+            }
+        }
+
+        public double MaxSpeed
+        {
+            get
+            {
+                return Simulation.Species[0].Bindings.Read(BoidSpecies.MaximumSpeed).Value;
+            }
+            set
+            {
+                Simulation.Species[0].Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
+            }
+        }
     }
 }

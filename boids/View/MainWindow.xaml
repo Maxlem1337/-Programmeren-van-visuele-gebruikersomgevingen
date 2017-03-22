@@ -9,7 +9,8 @@
         Title="MainWindow" Height="350" Width="525">
 
     <StackPanel>
-        <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+        <ItemsControl ItemsSource="{Binding Population}">
+            <!-- Simulation.World.Population -->
            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas>
@@ -20,12 +21,13 @@
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="{x:Type ContentPresenter}">
                     <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
+                    <!-- Position.Value.X -->
                     <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Fill="{Binding Species.Color}"  Width="25" Height="25" />
+                    <Ellipse Fill="{Binding Color}"  Width="25" Height="25" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -33,7 +35,7 @@
         
         
         
-        <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+        <ItemsControl ItemsSource="{Binding Population}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
@@ -71,20 +73,18 @@
                     <StackPanel>
                         <Label Content="{Binding}"></Label>
 
-                        <!-- 
-                        <Label Content="{Binding.DefaultValue}"></Label>
-                        <Label Content="{Binding.Maximum}"></Label>
-                        <Label Content="{Binding.Minimum}"></Label>
-                        -->
-                        
-                         
-                        <Slider Maximum="5000" Minimum="0"></Slider>
-                        
+                        <Label Content="{Binding Minimum}"></Label>
+                        <Label Content="{Binding Maximum}"></Label>
+                        <Label Content="{Binding DefaultValue}"></Label>
+
+                        <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding DefaultValue, Mode=OneWay}"></Slider>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
+        <Label>Maximum Speed</Label>
+        <Slider Maximum="5000" Minimum="0" Value="{Binding MaxSpeed}"></Slider>
 
 
     </StackPanel>
