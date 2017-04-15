@@ -1,4 +1,5 @@
-﻿using Cells;
+﻿using Bindings;
+using Cells;
 using Mathematics;
 using Model;
 using Model.Species;
@@ -13,20 +14,18 @@ namespace ViewModel
 {
     public class BoidViewModel
     {
-        public Boid Boid { get; private set; }
+        private readonly Boid Boid;
 
         public BoidViewModel(Boid boid)
         {
             this.Boid = boid;
         }
 
-        public Cell<Vector2D> Position
-        {
-            get
-            {
-                return Boid.Position;
-            }
-        }
+        public Cell<Vector2D> Position => Boid.Position;
+
+        public BoidSpecies Species => Boid.Species;
+
+        public ParameterBindings Bindings => Boid.Bindings;
 
         public String Color
         {
@@ -35,17 +34,5 @@ namespace ViewModel
                 return Boid.Species.Color;
             }
         }
-
-        public BoidSpecies Species
-        {
-            get
-            {
-                return Boid.Species;
-            }
-        }
-
     }
-
-
-
 }

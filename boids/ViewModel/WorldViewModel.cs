@@ -15,16 +15,14 @@ namespace ViewModel
 {
     public class WorldViewModel
     {
+        private readonly World World;
 
-        public WorldViewModel()
+        public WorldViewModel(World world)
         {
-            this.Simulation = new Simulation();
-            this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
-            this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
+            this.World = world;
         }
 
-        public Simulation Simulation { get; set; }
-
+        /*
         public ObservableCollection<BoidViewModel> Population
         {
             get
@@ -39,17 +37,28 @@ namespace ViewModel
                 return pop;
             }
         }
-
-        public double MaxSpeed
+        */
+        /*
+        public ObservableCollection<BoidViewModel> Population
         {
             get
             {
-                return Simulation.Species[0].Bindings.Read(BoidSpecies.MaximumSpeed).Value;
-            }
-            set
-            {
-                Simulation.Species[0].Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
+                return Simulation.World.Population;
             }
         }
+        */
+
+        public IEnumerable<BoidViewModel> Population
+        {
+            get
+            {
+                return World.Population.Select(b => new BoidViewModel(b));
+            }
+        }
+
+
+
+
+
     }
 }

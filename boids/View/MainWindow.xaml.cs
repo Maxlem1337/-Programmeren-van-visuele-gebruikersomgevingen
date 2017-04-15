@@ -1,21 +1,9 @@
 ﻿using Mathematics;
 using Model;
-using ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using Model.Species;
 
 namespace View
 {
@@ -30,28 +18,37 @@ namespace View
 
             // WARNING: THIS CODE VIOLATES MVVM PRINCIPLES
             // IT IS FOR ILLUSTRATIVE PURPOSES ONLY
-            //this.Simulation = new Simulation();
-            //this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
-            //this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
-            //this.DataContext = this;
+            this.Simulation = new Simulation();
+            this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
+            this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
+            this.DataContext = this;
 
-            this.WorldViewModel = new WorldViewModel();
-            this.DataContext = WorldViewModel;
+            //this.WorldViewModel = new WorldViewModel();
+            //this.DataContext = WorldViewModel.Simulation;
 
 
 
 
             // Using the timer like this will yield choppy animation
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { this.WorldViewModel.Simulation.Update(0.02); }, this.Dispatcher);
+            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { this.Simulation.Update(0.02); }, this.Dispatcher);
             timer.Start();
         }
 
-        //public Simulation Simulation { get; }
-        public WorldViewModel WorldViewModel { get; }
+        public Simulation Simulation { get; }
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public double test
         {
-            //WorldViewModel.Simulation.Species[0].MaximumSpeed;
+            get
+            {
+            return Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value;
+            }
+            set
+            {
+                Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
+            }
+       
         }
+
+        //public WorldViewModel WorldViewModel { get; }
     }
 }
