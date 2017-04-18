@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    class StringParameterViewModel
+    public class StringParameterViewModel
     {
+        /*
+        private readonly Boid Boid;
+
+        public BoidViewModel(Boid boid)
+        {
+            this.Boid = boid;
+        }
+        */
     }
 }

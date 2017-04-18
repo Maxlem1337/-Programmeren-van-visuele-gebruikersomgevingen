@@ -41,8 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoidViewModel.cs" />
+    <Compile Include="ParameterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangedDoubleParameterViewModel.cs" />
+    <Compile Include="SpeciesViewModel.cs" />
+    <Compile Include="StringParameterViewModel.cs" />
     <Compile Include="WorldViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

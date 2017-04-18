@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 using Model.Species;
+using ViewModel;
 
 namespace View
 {
@@ -23,8 +24,8 @@ namespace View
             this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
             this.DataContext = this;
 
-            //this.WorldViewModel = new WorldViewModel();
-            //this.DataContext = WorldViewModel.Simulation;
+
+            //this.DataContext = new WorldViewModel(Simulation);
 
 
 

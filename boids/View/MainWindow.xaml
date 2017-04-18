@@ -14,7 +14,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
-                <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+            <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
                     <!-- Simulation.World.Population -->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -42,6 +42,8 @@
 
 
                 <ComboBox Name="availableSpecies" ItemsSource="{Binding Simulation.Species}" DisplayMemberPath="Name" SelectedIndex="0">
+                    <!-- <ComboBox Name="availableSpecies" ItemsSource="{Binding Simulation.Species}" DisplayMemberPath="Name" SelectedIndex="0"> -->
+                    
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
                             <Setter Property="Foreground" Value="{Binding Color}" />
@@ -50,8 +52,6 @@
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
 
-
-                <!-- <TextBlock Text="{Binding Path=SelectedValue.Name, ElementName=availableSpecies, StringFormat=Selected: {0}}"></TextBlock> -->
 
                 <ItemsControl ItemsSource="{Binding Path=SelectedValue.Bindings.Parameters, ElementName=availableSpecies}">
                     <!-- <ItemsControl ItemsSource="{Binding Simulation.Species[0].Bindings.Parameters}"> -->

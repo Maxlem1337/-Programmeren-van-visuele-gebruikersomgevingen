@@ -15,11 +15,11 @@ namespace ViewModel
 {
     public class WorldViewModel
     {
-        private readonly World World;
+        private readonly Simulation Simulation;
 
-        public WorldViewModel(World world)
+        public WorldViewModel(Simulation Simulation)
         {
-            this.World = world;
+            this.Simulation = Simulation;
         }
 
         /*
@@ -52,10 +52,18 @@ namespace ViewModel
         {
             get
             {
-                return World.Population.Select(b => new BoidViewModel(b));
+
+                return Simulation.World.Population.Select(b => new BoidViewModel(b));
             }
         }
 
+        public IEnumerable<SpeciesViewModel> Species
+        {
+            get
+            {
+                return Simulation.Species.Select(s => new SpeciesViewModel(s));
+            }
+        }
 
 
 
