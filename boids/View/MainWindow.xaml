@@ -14,14 +14,14 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
-            <ItemsControl ItemsSource="{Binding Simulation.World.Population}">
+            <ItemsControl ItemsSource="{Binding Population}">
                     <!-- Simulation.World.Population -->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                        <Canvas>
+                            <Canvas>
 
-                        </Canvas>
-                        </ItemsPanelTemplate>
+                            </Canvas>
+                    </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="{x:Type ContentPresenter}">
@@ -41,7 +41,7 @@
             <StackPanel>
 
 
-                <ComboBox Name="availableSpecies" ItemsSource="{Binding Simulation.Species}" DisplayMemberPath="Name" SelectedIndex="0">
+                <ComboBox Name="availableSpecies" ItemsSource="{Binding Species}" DisplayMemberPath="Name" SelectedIndex="0">
                     <!-- <ComboBox Name="availableSpecies" ItemsSource="{Binding Simulation.Species}" DisplayMemberPath="Name" SelectedIndex="0"> -->
                     
                     <ComboBox.ItemContainerStyle>
@@ -53,7 +53,8 @@
                 </ComboBox>
 
 
-                <ItemsControl ItemsSource="{Binding Path=SelectedValue.Bindings.Parameters, ElementName=availableSpecies}">
+                <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
+                    <!-- SelectedValue.Bindings.Parameters -->
                     <!-- <ItemsControl ItemsSource="{Binding Simulation.Species[0].Bindings.Parameters}"> -->
                     <!-- <ItemsControl ItemsSource="{Binding Simulation.World.Population[0].Species.Bindings.Parameters}"> -->
                     <ItemsControl.Resources>

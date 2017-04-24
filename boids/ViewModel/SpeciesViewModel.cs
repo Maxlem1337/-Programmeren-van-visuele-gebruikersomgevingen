@@ -1,5 +1,7 @@
-﻿using Model.Species;
+﻿using Bindings;
+using Model.Species;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,11 +34,23 @@ namespace ViewModel
             }
         }
 
-        public IEnumerable<StringParameterViewModel> Parameters
+        public IEnumerable<IParameter> Parameters
         {
             get
             {
-                return null;
+                return BoidSpecies.Bindings.Parameters;
+                /*
+                foreach (var param in BoidSpecies.Bindings.Parameters)
+                {
+                    List<ParameterViewModel> parameters = new List<ParameterViewModel>();
+                    if (param is RangedDoubleParameter){
+                        parameters.Insert(new RangedDoubleParameterViewModel(param));
+                    } else
+                    {
+                        parameters.Insert(new StringParameterViewModel(param));
+                    }
+                }
+                */
             }
         }
     }

@@ -65,7 +65,18 @@ namespace ViewModel
             }
         }
 
+        public double test
+        {
+            get
+            {
+                return Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value;
+            }
+            set
+            {
+                Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
+            }
 
+        }
 
 
     }

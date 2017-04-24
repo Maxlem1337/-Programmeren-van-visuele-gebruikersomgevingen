@@ -25,7 +25,7 @@ namespace View
             this.DataContext = this;
 
 
-            //this.DataContext = new WorldViewModel(Simulation);
+            this.DataContext = new WorldViewModel(Simulation);
 
 
 
@@ -37,18 +37,7 @@ namespace View
 
         public Simulation Simulation { get; }
 
-        public double test
-        {
-            get
-            {
-            return Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value;
-            }
-            set
-            {
-                Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
-            }
-       
-        }
+        
 
         //public WorldViewModel WorldViewModel { get; }
     }
