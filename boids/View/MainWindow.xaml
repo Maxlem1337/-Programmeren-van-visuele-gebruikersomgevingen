@@ -4,50 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bindings="clr-namespace:Bindings;assembly=VGOLibrary"
-        xmlns:view="clr-namespace:View"
-        xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Window.Resources>
-        <view:NameToColorConverter x:Key="nameToColor" />
-    </Window.Resources>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition  Width="8*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-
-        
         <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
             <ItemsControl ItemsSource="{Binding Population}">
-                <!-- Simulation.World.Population -->
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
+                    <!-- Simulation.World.Population -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas>
 
-                        <Canvas>
-
-                        </Canvas>
-
+                            </Canvas>
                     </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
-                        <!-- Position.Value.X -->
-                        <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <!--<TextBlock Text="{Binding Species.Name}"></TextBlock>-->
-                        <Ellipse Fill="{Binding Species.Name, Converter={StaticResource nameToColor}}"  Width="25" Height="25" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type ContentPresenter}">
+                            <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
+                            <!-- Position.Value.X -->
+                            <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Fill="{Binding Species.Color}"  Width="25" Height="25" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
         </Border>
-        
-        
         <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
             <StackPanel>
 
@@ -57,15 +46,15 @@
                     
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
-                            <Setter Property="Foreground" Value="{Binding Name, Converter={StaticResource nameToColor}}" />
+                            <Setter Property="Foreground" Value="{Binding Color}" />
                         </Style>
                         
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
 
-                <Button Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add boid of selected species</Button>
 
                 <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
+                    <!-- SelectedValue.Bindings.Parameters -->
                     <!-- <ItemsControl ItemsSource="{Binding Simulation.Species[0].Bindings.Parameters}"> -->
                     <!-- <ItemsControl ItemsSource="{Binding Simulation.World.Population[0].Species.Bindings.Parameters}"> -->
                     <ItemsControl.Resources>
