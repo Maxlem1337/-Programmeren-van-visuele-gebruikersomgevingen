@@ -27,12 +27,5 @@ namespace ViewModel
 
         public ParameterBindings Bindings => Boid.Bindings;
 
-        public String Color
-        {
-            get
-            {
-                return Boid.Species.Color;
-            }
-        }
     }
 }

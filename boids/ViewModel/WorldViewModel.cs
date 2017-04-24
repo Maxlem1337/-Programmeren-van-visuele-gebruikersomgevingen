@@ -15,11 +15,13 @@ namespace ViewModel
 {
     public class WorldViewModel
     {
-        private readonly Simulation Simulation;
+        public readonly Simulation Simulation;
 
-        public WorldViewModel(Simulation Simulation)
+        public WorldViewModel()
         {
-            this.Simulation = Simulation;
+            this.Simulation = new Simulation();
+            this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
+            this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
         }
 
         /*
@@ -52,7 +54,6 @@ namespace ViewModel
         {
             get
             {
-
                 return Simulation.World.Population.Select(b => new BoidViewModel(b));
             }
         }
@@ -63,10 +64,25 @@ namespace ViewModel
             {
                 return Simulation.Species.Select(s => new SpeciesViewModel(s));
             }
+            set
+            {
+
+            }
         }
 
 
+        public double test
+        {
+            get
+            {
+                return Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value;
+            }
+            set
+            {
+                Simulation.World.Population[0].Species.Bindings.Read(BoidSpecies.MaximumSpeed).Value = value;
+            }
 
+        }
 
     }
 }
