@@ -1,4 +1,5 @@
 ﻿using Bindings;
+using Cells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace ViewModel
     public class RangedDoubleParameterViewModel : IParameterViewModel
     {
         private readonly RangedDoubleParameter RangedDoubleParameter;
+        private Cell<double> cell;
 
-        public RangedDoubleParameterViewModel(RangedDoubleParameter RangedDoubleParameter)
+        public RangedDoubleParameterViewModel(RangedDoubleParameter RangedDoubleParameter, Cell<double> cell)
         {
             this.RangedDoubleParameter = RangedDoubleParameter;
+            this.cell = cell;
         }
 
         public object DefaultValue
@@ -32,11 +35,32 @@ namespace ViewModel
             }
         }
 
-        public double value
+        public object Minimum
         {
             get
             {
-                return 0;
+                return RangedDoubleParameter.Minimum;
+            }
+        }
+
+        public object Maximum
+        {
+            get
+            {
+                return RangedDoubleParameter.Maximum;
+            }
+        }
+
+        public double Value
+        {
+            get
+            {
+                return cell.Value;
+            }
+            set
+            {
+                cell.Value = value;
+                
             }
         }
     }

@@ -3,9 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:bindings="clr-namespace:Bindings;assembly=VGOLibrary"
+        xmlns:view="clr-namespace:View"
+        xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+
+    <Window.Resources>
+        <view:NameToColorConverter x:Key="nameToColor" />
+    </Window.Resources>
 
 
     <Grid>
@@ -13,149 +18,107 @@
             <ColumnDefinition  Width="8*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
-            <ItemsControl ItemsSource="{Binding Population}">
-                    <!-- Simulation.World.Population -->
+        <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5"  MouseLeftButtonDown="Border_MouseLeftButtonDown">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Population}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas MouseLeftButtonDown="Canvas_MouseLeftButtonDown">
 
+                            <Canvas Width="{Binding Width.Value}" Height="{Binding Height.Value}">
                             </Canvas>
-                    </ItemsPanelTemplate>
+
+                        </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="{x:Type ContentPresenter}">
                             <Setter Property="Canvas.Left" Value="{Binding Position.Value.X}" />
-                            <!-- Position.Value.X -->
                             <Setter Property="Canvas.Top" Value="{Binding Position.Value.Y}" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Fill="{Binding Species.Color}"  Width="25" Height="25" />
+                            <Ellipse Fill="{Binding Species.Name, Converter={StaticResource nameToColor}}"  Width="25" Height="25" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            </ScrollViewer>
         </Border>
         <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
-            <StackPanel>
-
-
-                <ComboBox Name="availableSpecies" ItemsSource="{Binding Species}" DisplayMemberPath="Name" SelectedIndex="0">
-                    <!-- <ComboBox Name="availableSpecies" ItemsSource="{Binding Simulation.Species}" DisplayMemberPath="Name" SelectedIndex="0"> -->
-                    
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Foreground" Value="{Binding Color}" />
-                        </Style>
-                        
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-
-
-                <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
-                    <!-- SelectedValue.Bindings.Parameters -->
-                    <!-- <ItemsControl ItemsSource="{Binding Simulation.Species[0].Bindings.Parameters}"> -->
-                    <!-- <ItemsControl ItemsSource="{Binding Simulation.World.Population[0].Species.Bindings.Parameters}"> -->
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type bindings:RangedDoubleParameter}">
-                        <Border Background="Green" Margin="5" Padding="5">
-                            <StackPanel>
+            <TabControl>
+                <TabItem Header="World">
+                    <ItemsControl ItemsSource="{Binding Path=Parameters}">
+                        <ItemsControl.Resources>
+                            <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
+                                <Border Background="Green" Margin="5" Padding="5">
+                                    <StackPanel>
+                                        <WrapPanel>
+                                            <Label Content="{Binding Id}"></Label>
+                                            <Label Content="{Binding DefaultValue}" DockPanel.Dock="Left"></Label>
+                                        </WrapPanel>
+                                        <DockPanel VerticalAlignment="Center">
+                                            <Label Content="{Binding Minimum}"></Label>
+                                            <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
+                                            <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value}" AutoToolTipPlacement="BottomRight"></Slider>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
                                 <WrapPanel>
                                     <Label Content="{Binding Id}"></Label>
-                                    <Label Content="{Binding Minimum}"></Label>
-                                    <Label Content="{Binding Maximum}"></Label>
-                                    <Label Content="{Binding DefaultValue}"></Label>
+                                    <TextBox Text="{Binding Value}"></TextBox>
                                 </WrapPanel>
-                                <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding DefaultValue, Mode=OneWay}"></Slider>
-                            </StackPanel>
-                            
-                        </Border>
-                    </DataTemplate>
-
-                    <DataTemplate DataType="{x:Type bindings:IParameter}">
-                        <StackPanel>
-                            <Label Content="IParameter test"></Label>
-                        </StackPanel>
-                    </DataTemplate>
-                    <!--
-                    <DataTemplate DataType="{x:Type bindings:IParameter}">
-                        <StackPanel>
-                            <Label Content="{Binding}"></Label>
-
-                            <Label Content="{Binding Minimum}"></Label>
-                            <Label Content="{Binding Maximum}"></Label>
-                            <Label Content="{Binding DefaultValue}"></Label>
-
-                            <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding DefaultValue, Mode=OneWay}"></Slider>
-                        </StackPanel>
-                    </DataTemplate>
-                    -->
-                </ItemsControl.Resources>
-            </ItemsControl>
-
-                <Border Background="Purple" Margin="5" Padding="5">
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+                </TabItem>
+                <TabItem Header="Boids">
                     <StackPanel>
-                        <Label Content="Test slider for maximumspeed of hunters">
-                        </Label>
-                        <Slider Maximum="5000" Minimum="0" Value="{Binding test}"></Slider>
+                        <ComboBox Name="availableSpecies" ItemsSource="{Binding Species}" DisplayMemberPath="Name" SelectedIndex="0">
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Foreground" Value="{Binding Name, Converter={StaticResource nameToColor}}" />
+                                </Style>
+
+                            </ComboBox.ItemContainerStyle>
+                        </ComboBox>
+
+                        <Button Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add boid of selected species</Button>
+
+                        <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
+                            <ItemsControl.Resources>
+                                <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
+                                    <Border Background="Green" Margin="5" Padding="5">
+                                        <StackPanel>
+                                            <WrapPanel>
+                                                <Label Content="{Binding Id}"></Label>
+                                                <Label Content="{Binding DefaultValue}" DockPanel.Dock="Left"></Label>
+                                            </WrapPanel>
+                                            <DockPanel VerticalAlignment="Center">
+                                                <Label Content="{Binding Minimum}"></Label>
+                                                <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
+                                                <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value}" AutoToolTipPlacement="BottomRight"></Slider>
+                                            </DockPanel>
+                                           </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
+                                    <WrapPanel>
+                                        <Label Content="{Binding Id}"></Label>
+                                        <TextBox Text="{Binding Value}"></TextBox>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
                     </StackPanel>
-                </Border>
-                
-            </StackPanel>
+                </TabItem>
+            </TabControl>
+
+
+
+
+
+
         </Border>
-        
     </Grid>
-    
-    
-
-        <!--
-        <ItemsControl ItemsSource="{Binding Population}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="{x:Type ContentPresenter}">
-
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <Label Content="{Binding Species.Name}"></Label>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        -->
-        
-        <!--
-        <ItemsControl ItemsSource="{Binding Simulation.World.Population[0].Species.Bindings.Parameters}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="{x:Type ContentPresenter}">
-
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type testing:RangedDoubleParameter}">
-                    <StackPanel>
-                        <Label Content="{Binding}"></Label>
-
-                        <Label Content="{Binding Minimum}"></Label>
-                        <Label Content="{Binding Maximum}"></Label>
-                        <Label Content="{Binding DefaultValue}"></Label>
-
-                        <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding DefaultValue, Mode=OneWay}"></Slider>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        -->
 </Window>

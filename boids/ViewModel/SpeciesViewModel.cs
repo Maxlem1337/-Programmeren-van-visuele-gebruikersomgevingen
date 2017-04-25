@@ -1,4 +1,5 @@
 ﻿using Bindings;
+using Cells;
 using Model.Species;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,44 @@ namespace ViewModel
             }
         }
 
-        public IEnumerable<IParameter> Parameters
+        public List<IParameterViewModel> Parameters
         {
             get
             {
-                return BoidSpecies.Bindings.Parameters;
+                //return BoidSpecies.Bindings.Parameters;
+                List<IParameterViewModel> paramlist = new List<IParameterViewModel>();
+                foreach (var param in BoidSpecies.Bindings.Parameters)
+                {
+                    dynamic dynamicparam = param;
+                    paramlist.Add(CreateParameterViewModel(dynamicparam));
+                }
+                return paramlist;
             }
         }
 
         public ICommand CreateBoid
         {
             get; set;
+        }
+
+        public IParameterViewModel CreateParameterViewModel(IParameter p)
+        {
+            dynamic q = p;
+            return CreateParameterViewModel(q);
+        }
+
+        private IParameterViewModel CreateParameterViewModel(RangedDoubleParameter p)
+        {
+            //dynamic test = p;
+            Cell<double> test = BoidSpecies.Bindings.Read(p);
+            return new RangedDoubleParameterViewModel(p, test);
+        }
+
+        private IParameterViewModel CreateParameterViewModel(Parameter<string> p)
+        {
+
+            Cell<string> test = BoidSpecies.Bindings.Read(p);
+            return new StringParameterViewModel(p, test);
         }
 
 
@@ -60,6 +88,7 @@ namespace ViewModel
             public void Execute(object parameter)
             {
                 BoidSpecies.CreateBoid(new Mathematics.Vector2D(50, 50));
+                //Refresh de cell in WorldViewModel?
             }
         }
     }

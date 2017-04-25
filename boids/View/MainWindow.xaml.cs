@@ -14,10 +14,10 @@ namespace View
     /// 
     /// 
     /// 
-    /// Parameters veranderen
     /// Timer
     /// ValueConverterViewModel?
     /// Viewbox voor canvas?
+    /// 
 
 
 
