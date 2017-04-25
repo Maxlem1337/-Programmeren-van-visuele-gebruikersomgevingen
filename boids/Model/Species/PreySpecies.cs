@@ -31,7 +31,6 @@ namespace Model.Species
                 .Initialize(WallRepulsionConstant)
                 .Initialize(WallRepulsionExponent)
                 .Initialize(EnemySpecies);
-            base.Color = "Green";
         }
 
         internal override IArtificialIntelligence CreateAI(Boid boid)

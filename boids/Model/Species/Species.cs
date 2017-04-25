@@ -19,8 +19,6 @@ namespace Model.Species
 
         public static RangedDoubleParameter Elasticity = new RangedDoubleParameter("Elasticity", defaultValue: 0.25, minimum: 0, maximum: 1);
 
-        public string Color { get; set; }
-
         protected BoidSpecies(World world, string name)
         {
             this.World = world;

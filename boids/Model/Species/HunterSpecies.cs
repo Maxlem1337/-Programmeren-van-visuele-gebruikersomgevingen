@@ -40,7 +40,6 @@ namespace Model.Species
                 .Initialize(ZombieRepulsionExponent)
                 .Initialize(EnemySpecies)
                 .Initialize(FriendSpecies);
-            base.Color = "Red";
         }
 
         internal override IArtificialIntelligence CreateAI(Boid boid)

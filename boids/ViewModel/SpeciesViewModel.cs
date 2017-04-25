@@ -1,11 +1,11 @@
 ﻿using Bindings;
 using Model.Species;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -16,6 +16,7 @@ namespace ViewModel
         public SpeciesViewModel(BoidSpecies BoidSpecies)
         {
             this.BoidSpecies = BoidSpecies;
+            CreateBoid = new CreateBoidCommand(BoidSpecies);
         }
 
         public String Name
@@ -26,32 +27,42 @@ namespace ViewModel
             }
         }
 
-        public String Color
-        {
-            get
-            {
-                return BoidSpecies.Color;
-            }
-        }
-
         public IEnumerable<IParameter> Parameters
         {
             get
             {
                 return BoidSpecies.Bindings.Parameters;
-                /*
-                foreach (var param in BoidSpecies.Bindings.Parameters)
-                {
-                    List<ParameterViewModel> parameters = new List<ParameterViewModel>();
-                    if (param is RangedDoubleParameter){
-                        parameters.Insert(new RangedDoubleParameterViewModel(param));
-                    } else
-                    {
-                        parameters.Insert(new StringParameterViewModel(param));
-                    }
-                }
-                */
+            }
+        }
+
+        public ICommand CreateBoid
+        {
+            get; set;
+        }
+
+
+
+        private class CreateBoidCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            public BoidSpecies BoidSpecies;
+
+            public CreateBoidCommand(BoidSpecies BoidSpecies)
+            {
+                this.BoidSpecies = BoidSpecies;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                BoidSpecies.CreateBoid(new Mathematics.Vector2D(50, 50));
             }
         }
     }
+
+    
 }
