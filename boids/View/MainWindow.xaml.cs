@@ -37,7 +37,17 @@ namespace View
 
         public Simulation Simulation { get; }
 
-        
+        private void Canvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Test");
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Border test");
+        }
+
+
 
         //public WorldViewModel WorldViewModel { get; }
     }

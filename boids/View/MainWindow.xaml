@@ -18,7 +18,7 @@
                     <!-- Simulation.World.Population -->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas>
+                            <Canvas MouseLeftButtonDown="Canvas_MouseLeftButtonDown">
 
                             </Canvas>
                     </ItemsPanelTemplate>
