@@ -23,7 +23,13 @@ namespace ViewModel
 
         public Cell<Vector2D> Position => Boid.Position;
 
-        public BoidSpecies Species => Boid.Species;
+        public SpeciesViewModel Species
+        {
+            get
+            {
+                return new SpeciesViewModel(Boid.Species);
+            }
+        }
 
         public ParameterBindings Bindings => Boid.Bindings;
 

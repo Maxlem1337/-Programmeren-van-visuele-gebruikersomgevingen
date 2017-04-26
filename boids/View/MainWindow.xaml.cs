@@ -5,6 +5,9 @@ using System.Windows;
 using System.Windows.Threading;
 using Model.Species;
 using ViewModel;
+using System.Windows.Media;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace View
 {
@@ -23,6 +26,7 @@ namespace View
 
     public partial class MainWindow : Window
     {
+        private float Zoom = 1;
         public MainWindow()
         {
             InitializeComponent();
@@ -41,7 +45,7 @@ namespace View
 
 
             // Using the timer like this will yield choppy animation
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Simulation.Update(0.02); }, this.Dispatcher);
+            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
             timer.Start();
         }
 
@@ -51,9 +55,38 @@ namespace View
 
 
 
-        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Test_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Border test");
+            MessageBox.Show("Left mouse button");
+        }
+
+        private void content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Testing");
+            Canvas canvas = (Canvas)this.FindName("CanvasName");
+            if(canvas != null)
+            {
+                canvas.Width *= 2;  // BLAH
+                canvas.Height *= 2;  // BLAH
+                Zoom *= 2;
+                TransformGroup gridTransforms = new TransformGroup();
+                gridTransforms.Children.Add(new ScaleTransform(Zoom, Zoom));
+                gridTransforms.Children.Add(new TranslateTransform(0, 0));
+                canvas.LayoutTransform = gridTransforms;
+            }
+
+
+        }
+
+        private void content_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //canvas.Width /= 2;  // BLAH
+            //canvas.Height /= 2;  // BLAH
+            //Zoom /= 2;
+            //TransformGroup gridTransforms = new TransformGroup();
+            //gridTransforms.Children.Add(new ScaleTransform(Zoom, Zoom));
+            //gridTransforms.Children.Add(new TranslateTransform(0, 0));
+            //canvas.RenderTransform = gridTransforms;
         }
 
     }

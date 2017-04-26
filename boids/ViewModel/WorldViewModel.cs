@@ -15,7 +15,8 @@ namespace ViewModel
 {
     public class WorldViewModel
     {
-        public readonly Simulation Simulation;
+        private readonly Simulation Simulation;
+        public bool Pause { get; set; }
 
         public WorldViewModel()
         {
@@ -23,20 +24,37 @@ namespace ViewModel
             this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
             this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
 
-            /*
+            
             this.Population = Cell.Create<IEnumerable<BoidViewModel>>(null);
-            this.Species = Cell.Create<IEnumerable<SpeciesViewModel>>(null);
-            */
+            RefreshPopulation();
+            //this.Species = Cell.Create<IEnumerable<SpeciesViewModel>>(null);
+
+            this.Simulation.World.Population.CollectionChanged += Population_CollectionChanged;
+            
         }
 
-        
-        public IEnumerable<BoidViewModel> Population
+        private void Population_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            get
-            {
-                return Simulation.World.Population.Select(b => new BoidViewModel(b));
-            }
+            RefreshPopulation();
         }
+
+
+        //public IEnumerable<BoidViewModel> Population
+        //{
+        //    get
+        //    {
+        //        return Simulation.World.Population.Select(b => new BoidViewModel(b));
+        //    }
+        //}
+
+        public Cell<IEnumerable<BoidViewModel>> Population { get; }
+
+        public void RefreshPopulation()
+        {
+            this.Population.Value = Simulation.World.Population.Select(b => new BoidViewModel(b));
+        }
+
+
 
         public IEnumerable<SpeciesViewModel> Species
         {
@@ -45,27 +63,23 @@ namespace ViewModel
                 return Simulation.Species.Select(s => new SpeciesViewModel(s));
             }
         }
-        
-        
 
         /*
-        public Cell<IEnumerable<BoidViewModel>> Population { get; }
-
         public Cell<IEnumerable<SpeciesViewModel>> Species { get; }
-
-        public void RefreshPopulation()
-        {
-            
-            this.Population.Value = Simulation.World.Population.Select(b => new BoidViewModel(b));
-           
-        }
 
         public void RefreshSpecies()
         {
             this.Species.Value = Simulation.Species.Select(s => new SpeciesViewModel(s));
-            
         }
-    */
+        */
+
+        public void Update(double tijd)
+        {
+            if (!Pause)
+            {
+                Simulation.Update(tijd);
+            }
+        }
 
         public List<IParameterViewModel> Parameters
         {

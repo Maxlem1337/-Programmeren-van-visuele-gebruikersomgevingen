@@ -15,16 +15,16 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition  Width="8*"/>
+            <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5"  MouseLeftButtonDown="Border_MouseLeftButtonDown">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Population}">
+        <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MouseLeftButtonDown="content_MouseLeftButtonDown">
+                <ItemsControl ItemsSource="{Binding Population.Value}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
 
-                            <Canvas Width="{Binding Width.Value}" Height="{Binding Height.Value}">
+                            <Canvas Name="CanvasName" Width="{Binding Width.Value}" Height="{Binding Height.Value}" MouseLeftButtonDown="content_MouseLeftButtonDown" MouseRightButtonDown="content_MouseRightButtonDown">
                             </Canvas>
 
                         </ItemsPanelTemplate>
@@ -46,6 +46,7 @@
         <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
             <TabControl>
                 <TabItem Header="World">
+                    <StackPanel>
                     <ItemsControl ItemsSource="{Binding Path=Parameters}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
@@ -71,6 +72,12 @@
                             </DataTemplate>
                         </ItemsControl.Resources>
                     </ItemsControl>
+                        <WrapPanel>
+                            <Label>Pause</Label>
+                            <CheckBox IsChecked="{Binding Path=Pause, Mode=TwoWay}"/>
+                        </WrapPanel>
+                    </StackPanel>
+
                 </TabItem>
                 <TabItem Header="Boids">
                     <StackPanel>
