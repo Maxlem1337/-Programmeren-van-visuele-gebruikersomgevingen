@@ -6,7 +6,7 @@
         xmlns:view="clr-namespace:View"
         xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Loaded="OnLoaded">
 
     <Window.Resources>
         <view:NameToColorConverter x:Key="nameToColor" />
@@ -18,15 +18,15 @@
             <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="#FAA" Margin="5" Padding="5">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MouseLeftButtonDown="content_MouseLeftButtonDown">
-                <ItemsControl ItemsSource="{Binding Population.Value}">
+        <Border Name="BoidBorder" Grid.Column="0" Background="#F6F6F6" Margin="5" Padding="5" MouseLeftButtonDown="Test_MouseLeftButtonDown">
+            <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >-->
+            <Viewbox Name="BoidViewBox">
+                <Border BorderThickness="1" BorderBrush="Black" >
+                    <ItemsControl ItemsSource="{Binding WorldViewModel.Population.Value}" Name="PopulationItemsControl">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-
-                            <Canvas Name="CanvasName" Width="{Binding Width.Value}" Height="{Binding Height.Value}" MouseLeftButtonDown="content_MouseLeftButtonDown" MouseRightButtonDown="content_MouseRightButtonDown">
+                                <Canvas Name="BoidCanvas" Width="{Binding WorldViewModel.Width.Value}" Height="{Binding WorldViewModel.Height.Value}" >
                             </Canvas>
-
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
@@ -37,17 +37,19 @@
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Fill="{Binding Species.Name, Converter={StaticResource nameToColor}}"  Width="25" Height="25" />
+                                <Ellipse Fill="{Binding Species.Name, Converter={StaticResource nameToColor}}"  Width="25" Height="25" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ScrollViewer>
+                </Border>
+            </Viewbox>
+            <!--</ScrollViewer>-->
         </Border>
         <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
             <TabControl>
                 <TabItem Header="World">
-                    <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Parameters}">
+                    <StackPanel Margin="5">
+                        <ItemsControl ItemsSource="{Binding Path=WorldViewModel.Parameters}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
                                 <Border Background="Green" Margin="5" Padding="5">
@@ -65,23 +67,24 @@
                                 </Border>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
-                                <WrapPanel>
+                                    <WrapPanel Margin="5" HorizontalAlignment="Center">
                                     <Label Content="{Binding Id}"></Label>
                                     <TextBox Text="{Binding Value}"></TextBox>
                                 </WrapPanel>
                             </DataTemplate>
                         </ItemsControl.Resources>
                     </ItemsControl>
-                        <WrapPanel>
-                            <Label>Pause</Label>
-                            <CheckBox IsChecked="{Binding Path=Pause, Mode=TwoWay}"/>
+                        <WrapPanel Margin="5" HorizontalAlignment="Center">
+                            <CheckBox IsChecked="{Binding Path=WorldViewModel.Pause, Mode=TwoWay}">
+                                <TextBlock>Pause</TextBlock>
+                            </CheckBox>
                         </WrapPanel>
                     </StackPanel>
 
                 </TabItem>
                 <TabItem Header="Boids">
-                    <StackPanel>
-                        <ComboBox Name="availableSpecies" ItemsSource="{Binding Species}" DisplayMemberPath="Name" SelectedIndex="0">
+                    <StackPanel Margin="5">
+                        <ComboBox  Margin="5" Name="availableSpecies" ItemsSource="{Binding WorldViewModel.Species}" DisplayMemberPath="Name" SelectedIndex="0">
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Foreground" Value="{Binding Name, Converter={StaticResource nameToColor}}" />
@@ -90,18 +93,24 @@
                             </ComboBox.ItemContainerStyle>
                         </ComboBox>
 
-                        <Button Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add boid of selected species</Button>
+                        <Button Margin="5" Padding="5" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add random boid of selected species</Button>
 
+                        <WrapPanel Margin="5" HorizontalAlignment="Center">
+                            <CheckBox IsChecked="{Binding Path=AllowBoidPlacement, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                <TextBlock>Place boids by clicking on canvas</TextBlock>
+                            </CheckBox>
+                        </WrapPanel>
+                        
                         <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
                             <ItemsControl.Resources>
                                 <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
                                     <Border Background="Green" Margin="5" Padding="5">
                                         <StackPanel>
-                                            <WrapPanel>
+                                            <WrapPanel HorizontalAlignment="Center">
                                                 <Label Content="{Binding Id}"></Label>
                                                 <Label Content="{Binding DefaultValue}" DockPanel.Dock="Left"></Label>
                                             </WrapPanel>
-                                            <DockPanel VerticalAlignment="Center">
+                                            <DockPanel>
                                                 <Label Content="{Binding Minimum}"></Label>
                                                 <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
                                                 <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value}" AutoToolTipPlacement="BottomRight"></Slider>
@@ -110,7 +119,7 @@
                                     </Border>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
-                                    <WrapPanel>
+                                    <WrapPanel Margin="5" HorizontalAlignment="Center">
                                         <Label Content="{Binding Id}"></Label>
                                         <TextBox Text="{Binding Value}"></TextBox>
                                     </WrapPanel>

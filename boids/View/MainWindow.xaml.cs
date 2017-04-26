@@ -15,33 +15,49 @@ namespace View
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+    /// Todo:
     /// 
     /// 
+    /// 
+    /// 
+    /// Unsure:
     /// Timer
     /// ValueConverterViewModel?
-    /// Viewbox voor canvas?
     /// 
 
 
 
     public partial class MainWindow : Window
     {
-        private float Zoom = 1;
+        public WorldViewModel WorldViewModel { get; }
+
+        private bool _AllowBoidPlacement;
+
+        public bool AllowBoidPlacement {
+            get
+            {
+                return _AllowBoidPlacement;
+            }
+            set
+            {
+                if (value)
+                {
+                    BoidBorder.Cursor = Cursors.Cross;
+                } else
+                {
+                    BoidBorder.Cursor = Cursors.No;
+                }
+                _AllowBoidPlacement = value;
+            }
+        }
+       
+
         public MainWindow()
         {
             InitializeComponent();
-
-            // WARNING: THIS CODE VIOLATES MVVM PRINCIPLES
-            // IT IS FOR ILLUSTRATIVE PURPOSES ONLY
-            //this.Simulation = new Simulation();
-            //this.Simulation.Species[0].CreateBoid(new Vector2D(50, 50));
-            //this.Simulation.Species[1].CreateBoid(new Vector2D(150, 150));
-            //this.DataContext = this;
-
+            
             this.WorldViewModel = new WorldViewModel();
-            this.DataContext = WorldViewModel;
-
-
+            this.DataContext = this;
 
 
             // Using the timer like this will yield choppy animation
@@ -49,45 +65,31 @@ namespace View
             timer.Start();
         }
 
-        //public Simulation Simulation { get; }
-
-        public WorldViewModel WorldViewModel { get; }
-
-
-
         private void Test_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Left mouse button");
-        }
-
-        private void content_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Testing");
-            Canvas canvas = (Canvas)this.FindName("CanvasName");
-            if(canvas != null)
+            if (AllowBoidPlacement)
             {
-                canvas.Width *= 2;  // BLAH
-                canvas.Height *= 2;  // BLAH
-                Zoom *= 2;
-                TransformGroup gridTransforms = new TransformGroup();
-                gridTransforms.Children.Add(new ScaleTransform(Zoom, Zoom));
-                gridTransforms.Children.Add(new TranslateTransform(0, 0));
-                canvas.LayoutTransform = gridTransforms;
+                Point p = e.GetPosition(BoidViewBox);
+                SpeciesViewModel species = (SpeciesViewModel)availableSpecies.SelectedItem;
+                ContainerVisual child = VisualTreeHelper.GetChild(BoidViewBox, 0) as ContainerVisual;
+                ScaleTransform scale = child.Transform as ScaleTransform;
+                species.CreateBoidOnCoords(p.X / scale.ScaleX, p.Y / scale.ScaleY);
+
+
             }
+            else
+            {
 
-
+            }
         }
 
-        private void content_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //canvas.Width /= 2;  // BLAH
-            //canvas.Height /= 2;  // BLAH
-            //Zoom /= 2;
-            //TransformGroup gridTransforms = new TransformGroup();
-            //gridTransforms.Children.Add(new ScaleTransform(Zoom, Zoom));
-            //gridTransforms.Children.Add(new TranslateTransform(0, 0));
-            //canvas.RenderTransform = gridTransforms;
+            BoidBorder.Cursor = Cursors.No;
         }
 
+   
     }
 }

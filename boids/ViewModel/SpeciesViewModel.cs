@@ -48,6 +48,11 @@ namespace ViewModel
             get; set;
         }
 
+        public void CreateBoidOnCoords(double x, double y)
+        {
+            BoidSpecies.CreateBoid(new Mathematics.Vector2D(x, y));
+        }
+
         public IParameterViewModel CreateParameterViewModel(IParameter p)
         {
             dynamic q = p;
@@ -87,8 +92,8 @@ namespace ViewModel
 
             public void Execute(object parameter)
             {
-                BoidSpecies.CreateBoid(new Mathematics.Vector2D(50, 50));
-                //Refresh de cell in WorldViewModel?
+                Random rnd = new Random();
+                BoidSpecies.CreateBoid(new Mathematics.Vector2D(rnd.Next(50), rnd.Next(50)));
             }
         }
     }
