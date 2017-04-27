@@ -17,8 +17,11 @@ namespace View
             if(name == "hunter")
             {
                 return Brushes.Red;
-            } else {
+            } else  if(name == "prey"){
                 return Brushes.Green;
+            } else
+            {
+                return Brushes.Black;
             }
 
         }

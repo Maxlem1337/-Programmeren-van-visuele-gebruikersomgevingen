@@ -18,6 +18,7 @@ namespace ViewModel
         {
             this.BoidSpecies = BoidSpecies;
             CreateBoid = new CreateBoidCommand(BoidSpecies);
+            ResetSpeciesParameters = new ResetSpeciesParametersCommand(this);
         }
 
         public String Name
@@ -44,6 +45,11 @@ namespace ViewModel
         }
 
         public ICommand CreateBoid
+        {
+            get; set;
+        }
+
+        public ICommand ResetSpeciesParameters
         {
             get; set;
         }
@@ -94,6 +100,30 @@ namespace ViewModel
             {
                 Random rnd = new Random();
                 BoidSpecies.CreateBoid(new Mathematics.Vector2D(rnd.Next(50), rnd.Next(50)));
+            }
+        }
+
+        private class ResetSpeciesParametersCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            private SpeciesViewModel vm;
+
+            public ResetSpeciesParametersCommand(SpeciesViewModel vm)
+            {
+                this.vm = vm;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                foreach (IParameterViewModel pvm in vm.Parameters)
+                {
+                    pvm.Reset.Execute(null);
+                }
             }
         }
     }

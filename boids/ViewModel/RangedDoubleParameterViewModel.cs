@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -17,6 +18,7 @@ namespace ViewModel
         {
             this.RangedDoubleParameter = RangedDoubleParameter;
             this.cell = cell;
+            Reset = new ResetCommand(this);
         }
 
         public object DefaultValue
@@ -35,7 +37,7 @@ namespace ViewModel
             }
         }
 
-        public object Minimum
+        public double Minimum
         {
             get
             {
@@ -43,7 +45,7 @@ namespace ViewModel
             }
         }
 
-        public object Maximum
+        public double Maximum
         {
             get
             {
@@ -51,16 +53,43 @@ namespace ViewModel
             }
         }
 
-        public double Value
+        public Cell<double> Value
         {
             get
             {
-                return cell.Value;
+                return cell;
             }
             set
             {
-                cell.Value = value;
+                cell = value;
                 
+            }
+        }
+
+        public ICommand Reset
+        {
+            get; set;
+        }
+
+        private class ResetCommand : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+            private RangedDoubleParameterViewModel vm;
+
+
+            public ResetCommand(RangedDoubleParameterViewModel vm)
+            {
+                this.vm = vm;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                vm.Value.Value = (double)vm.DefaultValue;
             }
         }
     }

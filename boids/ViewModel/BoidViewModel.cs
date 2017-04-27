@@ -30,8 +30,5 @@ namespace ViewModel
                 return new SpeciesViewModel(Boid.Species);
             }
         }
-
-        public ParameterBindings Bindings => Boid.Bindings;
-
     }
 }

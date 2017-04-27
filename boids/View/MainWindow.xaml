@@ -6,13 +6,12 @@
         xmlns:view="clr-namespace:View"
         xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="OnLoaded">
+        Title="Boids" Height="350" Width="525" Loaded="OnLoaded">
 
     <Window.Resources>
         <view:NameToColorConverter x:Key="nameToColor" />
     </Window.Resources>
-
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
@@ -45,96 +44,105 @@
             </Viewbox>
             <!--</ScrollViewer>-->
         </Border>
-        <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
-            <TabControl>
-                <TabItem Header="World">
-                    <StackPanel Margin="5">
-                        <ItemsControl ItemsSource="{Binding Path=WorldViewModel.Parameters}">
-                        <ItemsControl.Resources>
-                            <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
-                                <Border Background="Green" Margin="5" Padding="5">
-                                    <StackPanel>
-                                        <WrapPanel>
-                                            <Label Content="{Binding Id}"></Label>
-                                            <Label Content="{Binding DefaultValue}" DockPanel.Dock="Left"></Label>
-                                        </WrapPanel>
-                                        <DockPanel VerticalAlignment="Center">
-                                            <Label Content="{Binding Minimum}"></Label>
-                                            <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
-                                            <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value}" AutoToolTipPlacement="BottomRight"></Slider>
-                                        </DockPanel>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
-                                    <WrapPanel Margin="5" HorizontalAlignment="Center">
-                                    <Label Content="{Binding Id}"></Label>
-                                    <TextBox Text="{Binding Value}"></TextBox>
-                                </WrapPanel>
-                            </DataTemplate>
-                        </ItemsControl.Resources>
-                    </ItemsControl>
-                        <WrapPanel Margin="5" HorizontalAlignment="Center">
-                            <CheckBox IsChecked="{Binding Path=WorldViewModel.Pause, Mode=TwoWay}">
-                                <TextBlock>Pause</TextBlock>
-                            </CheckBox>
-                        </WrapPanel>
-                    </StackPanel>
-
-                </TabItem>
-                <TabItem Header="Boids">
-                    <StackPanel Margin="5">
-                        <ComboBox  Margin="5" Name="availableSpecies" ItemsSource="{Binding WorldViewModel.Species}" DisplayMemberPath="Name" SelectedIndex="0">
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Foreground" Value="{Binding Name, Converter={StaticResource nameToColor}}" />
-                                </Style>
-
-                            </ComboBox.ItemContainerStyle>
-                        </ComboBox>
-
-                        <Button Margin="5" Padding="5" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add random boid of selected species</Button>
-
-                        <WrapPanel Margin="5" HorizontalAlignment="Center">
-                            <CheckBox IsChecked="{Binding Path=AllowBoidPlacement, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                                <TextBlock>Place boids by clicking on canvas</TextBlock>
-                            </CheckBox>
-                        </WrapPanel>
-                        
-                        <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
-                            <ItemsControl.Resources>
-                                <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
-                                    <Border Background="Green" Margin="5" Padding="5">
+        <Expander Grid.Column="1" ExpandDirection="Left" Width="Auto" IsExpanded="True">
+            <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
+                <TabControl>
+                    <TabItem Header="Boids">
+                        <StackPanel Margin="5">
+                            <ComboBox  Margin="5" Name="availableSpecies" ItemsSource="{Binding WorldViewModel.Species}" SelectedIndex="0">
+                                <!--<ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Foreground" Value="{Binding Name, Converter={StaticResource nameToColor}}" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>-->
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
                                         <StackPanel>
-                                            <WrapPanel HorizontalAlignment="Center">
-                                                <Label Content="{Binding Id}"></Label>
-                                                <Label Content="{Binding DefaultValue}" DockPanel.Dock="Left"></Label>
-                                            </WrapPanel>
-                                            <DockPanel>
-                                                <Label Content="{Binding Minimum}"></Label>
-                                                <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
-                                                <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value}" AutoToolTipPlacement="BottomRight"></Slider>
-                                            </DockPanel>
-                                           </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
-                                    <WrapPanel Margin="5" HorizontalAlignment="Center">
-                                        <Label Content="{Binding Id}"></Label>
-                                        <TextBox Text="{Binding Value}"></TextBox>
-                                    </WrapPanel>
-                                </DataTemplate>
-                            </ItemsControl.Resources>
-                        </ItemsControl>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
+                                            <TextBlock Foreground="{Binding Name, Converter={StaticResource nameToColor}}" Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
+                            <WrapPanel HorizontalAlignment="Center" >
+                                <Button Margin="5" Padding="5 2 5 2" Click="btnNextSpecies_Click">▼</Button>
+                                <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add boid randomly</Button>
+                                <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.ResetSpeciesParameters, ElementName=availableSpecies}">Reset parameters</Button>
+                                <Button Margin="5" Padding="5 2 5 2" Click="btnPreviousSpecies_Click">▲</Button>
+                            </WrapPanel>
 
+                            <WrapPanel Margin="5" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding Path=AllowBoidPlacement, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                    <TextBlock>Place boids by clicking on canvas</TextBlock>
+                                </CheckBox>
+                            </WrapPanel>
 
-
-
-
-        </Border>
+                            <ItemsControl ItemsSource="{Binding Path=SelectedValue.Parameters, ElementName=availableSpecies}">
+                                <ItemsControl.Resources>
+                                    <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
+                                        <Border Background="Green" Margin="5" Padding="5">
+                                            <StackPanel>
+                                                <WrapPanel HorizontalAlignment="Center">
+                                                    <Label Content="{Binding Id}"></Label>
+                                                    <Label Content="{Binding Value.Value}" DockPanel.Dock="Left"></Label>
+                                                </WrapPanel>
+                                                <DockPanel>
+                                                    <Label Content="{Binding Minimum}"></Label>
+                                                    <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
+                                                    <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
+                                        <WrapPanel Margin="5" HorizontalAlignment="Center">
+                                            <Label Content="{Binding Id}"></Label>
+                                            <TextBox Text="{Binding Value.Value}"></TextBox>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="World">
+                        <StackPanel Margin="5">
+                            <ItemsControl ItemsSource="{Binding Path=WorldViewModel.Parameters}">
+                                <ItemsControl.Resources>
+                                    <DataTemplate DataType="{x:Type viewmodel:RangedDoubleParameterViewModel}">
+                                        <Border Background="Green" Margin="5" Padding="5">
+                                            <StackPanel>
+                                                <WrapPanel>
+                                                    <Label Content="{Binding Id}"></Label>
+                                                    <Label Content="{Binding Value.Value}" DockPanel.Dock="Left"></Label>
+                                                </WrapPanel>
+                                                <DockPanel VerticalAlignment="Center">
+                                                    <Label Content="{Binding Minimum}"></Label>
+                                                    <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
+                                                    <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type viewmodel:StringParameterViewModel}">
+                                        <WrapPanel Margin="5" HorizontalAlignment="Center">
+                                            <Label Content="{Binding Id}"></Label>
+                                            <TextBox Text="{Binding Value.Value}"></TextBox>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+                            <WrapPanel Margin="5" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding Path=WorldViewModel.Pause, Mode=TwoWay}">
+                                    <TextBlock>Pause</TextBlock>
+                                </CheckBox>
+                            </WrapPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Settings">
+                        
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </Expander>
     </Grid>
 </Window>

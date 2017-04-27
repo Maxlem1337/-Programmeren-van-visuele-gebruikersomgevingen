@@ -20,10 +20,16 @@ namespace View
     /// 
     /// 
     /// 
-    /// Unsure:
-    /// Timer
+    /// 
+    /// Timer 
+    /// (
+    /// in Simulation -> this.quantizer = new TimeQuantizer(0.005, World.Update);
+    /// in Mainwindow -> var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
+    /// )
     /// ValueConverterViewModel?
     /// 
+
+
 
 
 
@@ -74,8 +80,6 @@ namespace View
                 ContainerVisual child = VisualTreeHelper.GetChild(BoidViewBox, 0) as ContainerVisual;
                 ScaleTransform scale = child.Transform as ScaleTransform;
                 species.CreateBoidOnCoords(p.X / scale.ScaleX, p.Y / scale.ScaleY);
-
-
             }
             else
             {
@@ -83,7 +87,17 @@ namespace View
             }
         }
 
-        
+        private void btnNextSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            if (availableSpecies.SelectedIndex < availableSpecies.Items.Count - 1)
+                availableSpecies.SelectedIndex = availableSpecies.SelectedIndex + 1;
+        }
+
+        private void btnPreviousSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            if (availableSpecies.SelectedIndex > 0)
+                availableSpecies.SelectedIndex = availableSpecies.SelectedIndex - 1;
+        }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
