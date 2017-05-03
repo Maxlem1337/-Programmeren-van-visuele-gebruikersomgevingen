@@ -68,15 +68,15 @@ namespace ViewModel
         private IParameterViewModel CreateParameterViewModel(RangedDoubleParameter p)
         {
             //dynamic test = p;
-            Cell<double> test = BoidSpecies.Bindings.Read(p);
-            return new RangedDoubleParameterViewModel(p, test);
+            //Cell<double> test = BoidSpecies.Bindings.Read(p);
+            return new RangedDoubleParameterViewModel(p, BoidSpecies.Bindings.Read(p));
         }
 
         private IParameterViewModel CreateParameterViewModel(Parameter<string> p)
         {
 
-            Cell<string> test = BoidSpecies.Bindings.Read(p);
-            return new StringParameterViewModel(p, test);
+            //Cell<string> test = BoidSpecies.Bindings.Read(p);
+            return new StringParameterViewModel(p, BoidSpecies.Bindings.Read(p));
         }
 
 

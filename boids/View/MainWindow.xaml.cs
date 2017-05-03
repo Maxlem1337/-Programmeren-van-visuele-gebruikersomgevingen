@@ -20,13 +20,17 @@ namespace View
     /// 
     /// 
     /// 
-    /// 
+    /// Expander
     /// Timer 
+    /// ValueConverterViewModel
+    /// 
+    /// 
+    /// 
     /// (
     /// in Simulation -> this.quantizer = new TimeQuantizer(0.005, World.Update);
     /// in Mainwindow -> var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
     /// )
-    /// ValueConverterViewModel?
+    /// 
     /// 
 
 
