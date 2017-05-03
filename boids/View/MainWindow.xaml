@@ -20,7 +20,7 @@
         <Border Name="BoidBorder" Grid.Column="0" Background="#F6F6F6" Margin="5" Padding="5" MouseLeftButtonDown="Test_MouseLeftButtonDown">
             <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >-->
             <Viewbox Name="BoidViewBox">
-                <Border BorderThickness="1" BorderBrush="Black" >
+                <Border BorderThickness="1" BorderBrush="Black" Padding="0 0 25 25" >
                     <ItemsControl ItemsSource="{Binding WorldViewModel.Population.Value}" Name="PopulationItemsControl">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
