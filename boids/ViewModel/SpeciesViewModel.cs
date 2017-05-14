@@ -17,7 +17,7 @@ namespace ViewModel
         public SpeciesViewModel(BoidSpecies BoidSpecies)
         {
             this.BoidSpecies = BoidSpecies;
-            CreateBoid = new CreateBoidCommand(BoidSpecies);
+            //CreateBoid = new CreateBoidCommand(BoidSpecies);
             ResetSpeciesParameters = new ResetSpeciesParametersCommand(this);
         }
 
@@ -43,12 +43,12 @@ namespace ViewModel
                 return paramlist;
             }
         }
-
+        /*
         public ICommand CreateBoid
         {
             get; set;
         }
-
+        */
         public ICommand ResetSpeciesParameters
         {
             get; set;
@@ -58,6 +58,14 @@ namespace ViewModel
         {
             BoidSpecies.CreateBoid(new Mathematics.Vector2D(x, y));
         }
+
+        public void CreateBoid(double width, double height)
+        {
+            Random rnd = new Random();
+            BoidSpecies.CreateBoid(new Mathematics.Vector2D(rnd.Next((int)width), rnd.Next((int)height)));
+        }
+
+        
 
         public IParameterViewModel CreateParameterViewModel(IParameter p)
         {
@@ -80,7 +88,7 @@ namespace ViewModel
         }
 
 
-
+        /*
         private class CreateBoidCommand : ICommand
         {
             public event EventHandler CanExecuteChanged;
@@ -102,6 +110,8 @@ namespace ViewModel
                 BoidSpecies.CreateBoid(new Mathematics.Vector2D(rnd.Next(50), rnd.Next(50)));
             }
         }
+        */
+
 
         private class ResetSpeciesParametersCommand : ICommand
         {

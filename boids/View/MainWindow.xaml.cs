@@ -15,14 +15,14 @@ namespace View
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    /// Todo:
     /// 
     /// 
     /// 
-    /// 
-    /// Expander
-    /// Timer 
     /// ValueConverterViewModel
+    /// Timer
+    /// Expander
+    ///  
+    /// 
     /// 
     /// 
     /// 
@@ -91,6 +91,12 @@ namespace View
             }
         }
 
+        private void Random_Boid_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SpeciesViewModel species = (SpeciesViewModel)availableSpecies.SelectedItem;
+            species.CreateBoid(WorldViewModel.Width.Value, WorldViewModel.Height.Value);
+        }
+
         private void btnNextSpecies_Click(object sender, RoutedEventArgs e)
         {
             if (availableSpecies.SelectedIndex < availableSpecies.Items.Count - 1)
@@ -107,7 +113,5 @@ namespace View
         {
             BoidBorder.Cursor = Cursors.No;
         }
-
-   
     }
 }

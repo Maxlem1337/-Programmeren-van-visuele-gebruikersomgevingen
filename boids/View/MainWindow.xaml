@@ -67,11 +67,11 @@
 
                                 <WrapPanel HorizontalAlignment="Center" >
                                     <Button Margin="5" Padding="5 2 5 2" Click="btnNextSpecies_Click">▼</Button>
-                                    <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}">Add boid randomly</Button>
+                                    <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}" Click="Random_Boid_Button_Click">Add boid randomly</Button>
                                     <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.ResetSpeciesParameters, ElementName=availableSpecies}">Reset parameters</Button>
                                     <Button Margin="5" Padding="5 2 5 2" Click="btnPreviousSpecies_Click">▲</Button>
                                 </WrapPanel>
-
+                                
                                 <WrapPanel Margin="5" HorizontalAlignment="Center">
                                     <CheckBox IsChecked="{Binding Path=AllowBoidPlacement, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center">
                                         <TextBlock>Place boids by clicking on canvas</TextBlock>
@@ -85,12 +85,12 @@
                                                 <StackPanel>
                                                     <WrapPanel HorizontalAlignment="Center">
                                                         <Label Content="{Binding Id}"></Label>
-                                                        <TextBox DockPanel.Dock="Left" VerticalAlignment="Center" Background="Transparent" Text="{Binding Value.Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                        <TextBox DockPanel.Dock="Left" VerticalAlignment="Center" Background="Transparent" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, ElementName=paramslider}"></TextBox>
                                                     </WrapPanel>
                                                     <DockPanel>
                                                         <Label Content="{Binding Minimum}"></Label>
                                                         <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
-                                                        <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
+                                                        <Slider Name="paramslider" Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
                                                     </DockPanel>
                                                 </StackPanel>
                                             </Border>
@@ -115,12 +115,12 @@
                                             <StackPanel>
                                                 <WrapPanel HorizontalAlignment="Center"> 
                                                     <Label Content="{Binding Id}"></Label>
-                                                    <TextBox DockPanel.Dock="Left" VerticalAlignment="Center" Background="Transparent" Text="{Binding Value.Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                    <TextBox DockPanel.Dock="Left" VerticalAlignment="Center" Background="Transparent" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, ElementName=paramslider}"></TextBox>
                                                 </WrapPanel>
                                                 <DockPanel VerticalAlignment="Center">
                                                     <Label Content="{Binding Minimum}"></Label>
                                                     <Label Content="{Binding Maximum}" DockPanel.Dock="Right"></Label>
-                                                    <Slider Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
+                                                    <Slider Name="paramslider" Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Value="{Binding Value.Value}" AutoToolTipPlacement="BottomRight" VerticalAlignment="Center"></Slider>
                                                 </DockPanel>
                                             </StackPanel>
                                         </Border>
