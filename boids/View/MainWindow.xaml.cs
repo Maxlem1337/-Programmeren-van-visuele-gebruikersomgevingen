@@ -1,13 +1,9 @@
-﻿using Mathematics;
-using Model;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using Model.Species;
 using ViewModel;
 using System.Windows.Media;
 using System.Windows.Input;
-using System.Windows.Controls;
 
 namespace View
 {
@@ -18,7 +14,7 @@ namespace View
     /// 
     /// 
     /// 
-    /// ValueConverterViewModel
+    /// 
     /// Timer
     /// Expander
     ///  
@@ -107,6 +103,45 @@ namespace View
         {
             if (availableSpecies.SelectedIndex > 0)
                 availableSpecies.SelectedIndex = availableSpecies.SelectedIndex - 1;
+        }
+
+        private void Fullscreen_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            //Default: SingleBorderWindow CanResize Normal
+            HomePage.WindowStyle = WindowStyle.None;
+            HomePage.ResizeMode = ResizeMode.NoResize;
+
+            HomePage.WindowState = WindowState.Normal; //I have to switch to normal first, or it wont switch to fullscreen when window is maximized.
+            HomePage.WindowState = WindowState.Maximized;
+
+            HomePage.Width = SystemParameters.VirtualScreenWidth;
+            HomePage.Height = SystemParameters.VirtualScreenHeight;
+            //HomePage.Left = 0;
+            //HomePage.Top = 0;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                HomePage.WindowStyle = WindowStyle.SingleBorderWindow;
+                HomePage.ResizeMode = ResizeMode.CanResize;
+                HomePage.WindowState = WindowState.Normal; //Changing to normal first will fix the small black border on the right.
+                HomePage.WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void Collapsed_Expander(object sender, RoutedEventArgs e)
+        {
+            //new GridLength(5, GridUnitType.Star);
+            col2.Width = new GridLength(5, GridUnitType.Star);
+            col1.Width = new GridLength(95, GridUnitType.Star);
+        }
+
+        private void Expanded_Expander(object sender, RoutedEventArgs e)
+        {
+            col2.Width = new GridLength(25, GridUnitType.Star);
+            col1.Width = new GridLength(75, GridUnitType.Star);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
