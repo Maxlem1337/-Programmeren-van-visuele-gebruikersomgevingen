@@ -14,7 +14,7 @@ namespace View
     /// 
     /// 
     /// 
-    /// 
+    /// Move AllowBoidPlacement to WorldViewMode, move the if(AllowBoidPlacement) there aswell.
     /// Timer
     /// Expander
     ///  
