@@ -47,7 +47,7 @@
             </Viewbox>
             <!--</ScrollViewer>-->
         </Border>
-        <Expander Grid.Column="1" ExpandDirection="Left" Width="Auto" IsExpanded="True" Collapsed="Collapsed_Expander" Expanded="Expanded_Expander">
+        <Expander Grid.Column="1" ExpandDirection="Left" Width="Auto" IsExpanded="True" Collapsed="Collapsed_Expander" Expanded="Expanded_Expander" >
             <Border Grid.Column="1" Background="#AAF" Margin="5" Padding="5">
                 <!-- MinWidth="{Binding Path=Width, ElementName=HomePage, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.25}" -->
                 <TabControl>
@@ -71,7 +71,9 @@
 
                                 <WrapPanel HorizontalAlignment="Center" >
                                     <Button Margin="5" Padding="5 2 5 2" Click="btnPreviousSpecies_Click">▲</Button>
-                                    <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}" Click="Random_Boid_Button_Click">Add boid randomly</Button>
+                                    <Button Margin="5" Padding="5 2 5 2" Click="Random_Boid_Button_Click">Add boid randomly</Button>
+                                    <!-- Command="{Binding Path=SelectedValue.CreateBoid, ElementName=availableSpecies}" -->
+                                    
                                     <Button Margin="5" Padding="5 2 5 2" Command="{Binding Path=SelectedValue.ResetSpeciesParameters, ElementName=availableSpecies}">Reset parameters</Button>
                                     <Button Margin="5" Padding="5 2 5 2" Click="btnNextSpecies_Click">▼</Button>
                                 </WrapPanel>
@@ -146,8 +148,7 @@
                     </TabItem>
                     <TabItem Header="Settings">
                         <StackPanel>
-                            <Button Margin="5" Padding="5 2 5 2" Click="Fullscreen_Btn_Click">Fullscreen</Button>
-                            <TextBox Text="{Binding Path=Width, ElementName=HomePage, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.25}"></TextBox>
+                            <Button Margin="5" Padding="5 2 5 2" Click="Fullscreen_Btn_Click">Fullscreen (Escape to exit)</Button>
                         </StackPanel>
                     </TabItem>
                 </TabControl>

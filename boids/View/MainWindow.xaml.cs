@@ -4,6 +4,8 @@ using System.Windows.Threading;
 using ViewModel;
 using System.Windows.Media;
 using System.Windows.Input;
+using VGOLibrary;
+using Microsoft.Practices.ServiceLocation;
 
 namespace View
 {
@@ -12,13 +14,8 @@ namespace View
     /// </summary>
     /// 
     /// 
-    /// 
-    /// 
-    /// Move AllowBoidPlacement to WorldViewMode, move the if(AllowBoidPlacement) there aswell.
-    /// Timer
-    /// Expander
-    ///  
-    /// 
+    /// Model extension 
+    /// AllowBoidPlacement
     /// 
     /// 
     /// 
@@ -27,7 +24,8 @@ namespace View
     /// in Mainwindow -> var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
     /// )
     /// 
-    /// 
+    /// Move AllowBoidPlacement to WorldViewModel, move the if(AllowBoidPlacement) there aswell.
+    /// Remove MultiplyConverter
 
 
 
@@ -39,7 +37,8 @@ namespace View
 
         private bool _AllowBoidPlacement;
 
-        public bool AllowBoidPlacement {
+        public bool AllowBoidPlacement
+        {
             get
             {
                 return _AllowBoidPlacement;
@@ -49,26 +48,37 @@ namespace View
                 if (value)
                 {
                     BoidBorder.Cursor = Cursors.Cross;
-                } else
+                }
+                else
                 {
                     BoidBorder.Cursor = Cursors.No;
                 }
                 _AllowBoidPlacement = value;
             }
         }
-       
+
 
         public MainWindow()
         {
             InitializeComponent();
-            
+
             this.WorldViewModel = new WorldViewModel();
             this.DataContext = this;
 
 
             // Using the timer like this will yield choppy animation
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
-            timer.Start();
+            //var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(20), DispatcherPriority.Render, (x, y) => { WorldViewModel.Update(0.02); }, this.Dispatcher);
+            //timer.Start();
+
+
+            var timer = ServiceLocator.Current.GetInstance<ITimerService>();
+            timer.Tick += Timer_Tick;
+            timer.Start(new TimeSpan(0, 0, 0, 0, 20));
+        }
+
+        private void Timer_Tick(ITimerService obj)
+        {
+            WorldViewModel.Update(0.02);
         }
 
         private void Test_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
